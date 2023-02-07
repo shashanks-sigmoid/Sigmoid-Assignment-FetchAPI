@@ -1,0 +1,25 @@
+.table {
+    width: 800px;
+    height: 1000px;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+th {
+    border-bottom: 1px solid black;
+    border: 2px solid black;
+}
+
+td {
+    text-align: center;
+    border: 2px solid black;
+}
+
+.header {
+    text-transform: uppercase;
+    height: 2rem;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(161, 199, 246);
+}
