@@ -58,6 +58,7 @@ function FormData(props) {
 
     return (
         <div>
+            <hr className='hr-line' />
             <h2>Google Sheet Form</h2>
             <FormControl className="form">
                 <TextField

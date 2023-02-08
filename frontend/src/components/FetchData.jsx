@@ -56,7 +56,7 @@ function FetchData(props) {
                             return (
                                 <tr key={key}>
                                     {rows.map((row, i) => {
-                                        return <td className='element' key={i}>{i === 2 ? row.slice(3) : row}</td>
+                                        return <td className='element' key={i}>{row}</td>
                                     })}
                                 </tr>
                             )
