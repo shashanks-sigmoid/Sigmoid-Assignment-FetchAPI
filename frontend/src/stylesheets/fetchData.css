@@ -18,6 +18,7 @@ td {
 .header {
     text-transform: uppercase;
     height: 2rem;
+    font-weight: bold;
 }
 
 tr:nth-child(even) {
