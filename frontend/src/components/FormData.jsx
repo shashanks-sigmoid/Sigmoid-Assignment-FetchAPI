@@ -54,30 +54,6 @@ function FormData(props) {
             .catch((err) => {
                 console.log(err)
             })
-        // const k = JSON.stringify({ values: [Object.values(data)] })
-        // const response = await fetch(
-        //     `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A32:append?valueInputOption=RAW`,
-        //     {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             Authorization: `Bearer ${REACT_APP_PRIVATE_KEY}`,
-        //         },
-        //         body: JSON.stringify({
-        //             values: [Object.values(data)],
-        //         }),
-        //     }
-        // )
-        // const result = await response.json();
-
-        // if (result.error) {
-        //     console.error(result.error.message);
-        // } else {
-        //     console.log("Data added to Google Sheet successfully!");
-        //     console.log(k)
-        // }
-
-
     }
 
     return (
