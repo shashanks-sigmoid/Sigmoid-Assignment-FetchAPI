@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useState } from 'react'
 import "../stylesheets/fetchData.css"
+import FormData from './FormData';
 //require("dotenv").config();
 
 function FetchData(props) {
@@ -63,6 +64,7 @@ function FetchData(props) {
                     })}
                 </tbody>
             </table>
+            <FormData keyId={REACT_APP_PRIVATE_KEY} len={fetchData.length} />
         </div>
     )
 }

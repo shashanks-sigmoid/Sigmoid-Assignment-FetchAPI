@@ -16,15 +16,16 @@ function FormData(props) {
     const [homeState, setHomeState] = useState("")
     const [major, setMajor] = useState("")
     const [extracurricularActivity, setExtracurricularActivity] = useState("")
+    const len = props.len + 1
 
-    const clearState = () => {
-        setStudentName("")
-        setGender("")
-        setClassLevel("")
-        setHomeState("")
-        setMajor("")
-        setExtracurricularActivity("")
-    }
+    // const clearState = () => {
+    //     setStudentName("")
+    //     setGender("")
+    //     setClassLevel("")
+    //     setHomeState("")
+    //     setMajor("")
+    //     setExtracurricularActivity("")
+    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -40,7 +41,7 @@ function FormData(props) {
         // console.log([Object.values(data)])
         const body = JSON.stringify({ values: [Object.values(data)] })
         await axios
-            .post(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A32:append?valueInputOption=RAW`,
+            .post(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A${len}:append?valueInputOption=RAW`,
                 body, {
                 headers: {
                     "Content-Type": "application/json",
@@ -49,7 +50,7 @@ function FormData(props) {
             })
             .then((res) => {
                 console.log(res)
-                clearState()
+                window.location.reload(false)
             })
             .catch((err) => {
                 console.log(err)
