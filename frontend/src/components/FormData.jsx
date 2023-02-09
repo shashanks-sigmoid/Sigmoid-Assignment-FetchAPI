@@ -1,47 +1,57 @@
 import React, { useState } from 'react'
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import '../stylesheets/formData.css'
 import axios from 'axios';
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 function FormData(props) {
+    const { SHEET_ID, REACT_APP_PRIVATE_KEY,
+        formField, setFormField, isRefress,
+        setIsRefress, length } = props;
 
-    const REACT_APP_PRIVATE_KEY = props.keyId
-    const SHEET_ID = "1Q-B2btkfurhJUQriLhJaagiDJB5foh-hUjToX21yWXE"
-    const [studentName, setStudentName] = useState("")
-    const [gender, setGender] = useState("")
-    const [classLevel, setClassLevel] = useState("")
-    const [homeState, setHomeState] = useState("")
-    const [major, setMajor] = useState("")
-    const [extracurricularActivity, setExtracurricularActivity] = useState("")
-    const len = props.len + 1
 
-    // const clearState = () => {
-    //     setStudentName("")
-    //     setGender("")
-    //     setClassLevel("")
-    //     setHomeState("")
-    //     setMajor("")
-    //     setExtracurricularActivity("")
-    // }
+    const [open, setOpen] = useState(false)
+
+    const handleOpen = (() => {
+        setOpen(true)
+    })
+
+    const handleClose = (() => {
+        setOpen(false)
+    })
+
+    const handleFormField = (e) => {
+        e.persist();
+        setFormField((formField) => ({
+            ...formField,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const data = {
-            'Student Name': studentName,
-            'Gender': gender,
-            'Class Level': classLevel,
-            'Home State': homeState,
-            'Major': major,
-            'Extracurricular Activity': extracurricularActivity
-        }
 
-        // console.log([Object.values(data)])
-        const body = JSON.stringify({ values: [Object.values(data)] })
+        console.log([Object.values(formField)])
+        const body = JSON.stringify({ values: [Object.values(formField)] })
         await axios
-            .post(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A${len}:append?valueInputOption=RAW`,
+            .post(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A${length + 1}:append?valueInputOption=RAW`,
                 body, {
                 headers: {
                     "Content-Type": "application/json",
@@ -50,7 +60,16 @@ function FormData(props) {
             })
             .then((res) => {
                 console.log(res)
-                window.location.reload(false)
+                setFormField({
+                    "Student Name": "",
+                    "Gender": "",
+                    "Class Level": "",
+                    "Home State": "",
+                    "Major": "",
+                    "Extracurricular Activity": "",
+                })
+                setIsRefress(!isRefress)
+                handleOpen()
             })
             .catch((err) => {
                 console.log(err)
@@ -63,50 +82,56 @@ function FormData(props) {
             <h2>Google Sheet Form</h2>
             <FormControl className="form">
                 <TextField
-                    value={studentName}
+                    value={formField["Student Name"]}
                     variant="outlined"
-                    onChange={e => setStudentName(e.target.value)}
+                    onChange={handleFormField}
                     type="text"
+                    name='Student Name'
                     label="Student Name"
                     className='input-field'
                 />
                 <TextField
-                    value={gender}
+                    value={formField["Gender"]}
                     variant="outlined"
-                    onChange={e => setGender(e.target.value)}
+                    onChange={handleFormField}
                     type="text"
+                    name='Gender'
                     label="Gender"
                     className='input-field'
                 />
                 <TextField
-                    value={classLevel}
+                    value={formField["Class Level"]}
                     variant="outlined"
-                    onChange={e => setClassLevel(e.target.value)}
+                    onChange={handleFormField}
                     type="text"
+                    name='Class Level'
                     label="Class Level"
                     className='input-field'
                 />
                 <TextField
-                    value={homeState}
+                    value={formField["Home State"]}
                     variant="outlined"
-                    onChange={e => setHomeState(e.target.value)}
+                    onChange={handleFormField}
                     type="text"
+                    name='Home State'
                     label="Home State"
                     className='input-field'
                 />
                 <TextField
-                    value={major}
+                    value={formField["Major"]}
                     variant="outlined"
-                    onChange={e => setMajor(e.target.value)}
+                    onChange={handleFormField}
                     type="text"
+                    name='Major'
                     label="Major"
                     className='input-field'
                 />
                 <TextField
-                    value={extracurricularActivity}
+                    value={formField["Extracurricular Activity"]}
                     variant="outlined"
-                    onChange={e => setExtracurricularActivity(e.target.value)}
+                    onChange={handleFormField}
                     type="text"
+                    name='Extracurricular Activity'
                     label="Extra-curricular Activity"
                     className='input-field'
                 />
@@ -114,6 +139,18 @@ function FormData(props) {
                     Submit
                 </Button>
             </FormControl>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Form Submitted Successfully !!
+                    </Typography>
+                </Box>
+            </Modal>
         </div>
     )
 }

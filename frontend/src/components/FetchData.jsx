@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { useState } from 'react'
 import "../stylesheets/fetchData.css"
-import FormData from './FormData';
 //require("dotenv").config();
 
 function FetchData(props) {
 
-    const SHEET_ID = "1Q-B2btkfurhJUQriLhJaagiDJB5foh-hUjToX21yWXE"
-    const REACT_APP_PRIVATE_KEY = props.keyId
-    const [fetchData, setFetchData] = useState([])
-    const [isLoad, setIsLoad] = useState(0)
-    const [msg, setMsg] = useState("")
+    const { SHEET_ID, REACT_APP_PRIVATE_KEY,
+        fetchData, setFetchData,
+        isLoad, setIsLoad,
+        msg, setMsg,
+        isRefress, setLength } = props;
+
 
     useEffect(() => {
         getDataFromSheet();
         // eslint-disable-next-line
-    }, [])
+    }, [isRefress])
 
     const getDataFromSheet = async () => {
 
@@ -29,6 +28,7 @@ function FetchData(props) {
             })
             .then((result) => {
                 setFetchData(result.data.values)
+                setLength(fetchData.length)
                 setIsLoad(1)
             })
             .catch((err) => {
@@ -64,7 +64,6 @@ function FetchData(props) {
                     })}
                 </tbody>
             </table>
-            <FormData keyId={REACT_APP_PRIVATE_KEY} len={fetchData.length} />
         </div>
     )
 }
